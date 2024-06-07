@@ -1,0 +1,128 @@
+<?php
+session_start();
+
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION['usuario'])) {
+    header("Location: index.php");
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <script src="js/jquery-3.3.1.slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        </nav>
+
+    <div class="container-fluid bg-secondary">
+        </div>
+
+    <div class="container-fluid">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card">
+                    <a class="btn btn-light" data-toggle="collapse" href="#collaprep" role="button" aria-expanded="false" aria-controls="collaprep">REPORTE</a>
+                </div>
+                <div class="collapse" id="collaprep">
+                    <form id="reporteForm" method="post" action="guardar_reporte.php"> 
+                        <table class="table table-hover" id="reporteTable">
+                            <tr>
+                                <th>#</th>
+                                <th>Acciones de contención</th>
+                                <th>Fecha</th>
+                                <th>Responsable</th>
+                            </tr>
+                        </table>
+                        <button type="button" class="btn btn-success" id="addActionButton">+</button>
+
+                        <table class="table">
+                            </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card">
+                    <a class="btn btn-light" data-toggle="collapse" href="#collapplan" role="button" aria-expanded="false" aria-controls="collapplan">PLAN</a>
+                </div>
+                <div class="collapse" id="collapplan">
+                    <form id="planForm" method="post" action="guardar_plan.php"> 
+                        <table class="table table-hover" id="planTable">
+                            <tr>
+                                <th>#</th>
+                                <th>Acciones de contención</th>
+                                <th>Fecha</th>
+                                <th>Responsable</th>
+                                <th>Evidencias</th>
+                            </tr>
+                        </table>
+                        <button type="button" class="btn btn-success" id="addPlanButton">+</button>
+
+                        <table class="table">
+                            </table>
+                        <button type="submit" class="btn btn-primary btn-lg">Enviar</button>
+                    </form> 
+                </div>
+            </div>
+            <div class="card">
+                <a> Objetivos:</a>
+                <textarea name="obj" id="obj" cols="50" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script> <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let actionCount = 1;
+            let planCount = 1;
+
+            document.getElementById("addActionButton").addEventListener("click", function () {
+                addAction();
+            });
+
+            document.getElementById("addPlanButton").addEventListener("click", function () {
+                addPlan();
+            });
+
+            function addAction() {
+                actionCount++;
+                const tableBody = document.querySelector("#reporteTable tbody");
+                const newRow = document.createElement("tr");
+
+                newRow.innerHTML = `
+                    <td>${actionCount}</td>
+                    <td><input type="text" name="accion_contencion[]"></td>
+                    <td><input type="date" name="accion_fecha[]"></td>
+                    <td><input type="text" name="accion_responsable[]"></td>
+                `;
+                tableBody.appendChild(newRow);
+            }
+
+            function addPlan() {
+                planCount++;
+                const tableBody = document.querySelector("#planTable tbody");
+                const newRow = document.createElement("tr");
+
+                newRow.innerHTML = `
+                    <td>${planCount}</td>
+                    <td><input type="text" name="plan_accion[]"></td>
+                    <td><input type="date" name="plan_fecha[]"></td>
+                    <td><input type="text" name="plan_responsable[]"></td>
+                    <td><input type="text" name="plan_evidencias[]"></td>
+                `;
+                tableBody.appendChild(newRow);
+            }
+        });
+    </script>
+</body>
+</html>
